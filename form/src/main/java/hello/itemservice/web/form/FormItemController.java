@@ -3,6 +3,8 @@ package hello.itemservice.web.form;
 import hello.itemservice.domain.item.Item;
 import hello.itemservice.domain.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import java.util.List;
 public class FormItemController {
 
     private final ItemRepository itemRepository;
+    Logger LOGGER = LoggerFactory.getLogger(FormItemController.class);
 
     @GetMapping
     public String items(Model model) {
@@ -39,6 +42,8 @@ public class FormItemController {
 
     @PostMapping("/add")
     public String addItem(@ModelAttribute Item item, RedirectAttributes redirectAttributes) {
+        LOGGER.info("item.open = {}",item.getOpen());
+
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
